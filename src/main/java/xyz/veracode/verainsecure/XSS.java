@@ -43,8 +43,15 @@ public class XSS extends HttpServlet {
 		htmlResponse += "<h2>Your xss vulnerable username is: " + username + "<br/>";
 		htmlResponse += "</html>";
 		writer.println(htmlResponse);
-		
-        	 
+
+		//Other XSS
+		String vulnparam = req.getParameter("xssvulnparam");
+		String badhtmlResponse = "<html>";
+		badhtmlResponse += "<h2>Your xss vulnerable username is: " + vulnparam + "<br/>";
+		badhtmlResponse += "</html>";
+		writer.println(badhtmlResponse);
+
+
 		//Protect against CWE 80
 		//Built in Encoding Library
 
@@ -53,7 +60,7 @@ public class XSS extends HttpServlet {
 		cleanHTMLResponse += "<h2>Your non xss vulnerable username is: " + sanitizedUsername + "<br/>";
 		cleanHTMLResponse += "</html>";
 		writer.println(cleanHTMLResponse);
-		
+
 		//JBCrypt Flaw for SCA
 		//Vulnerable Method: hashpw, which inherits from actual vuln method
 		String password = req.getParameter("xsspassword");
