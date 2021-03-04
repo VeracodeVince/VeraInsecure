@@ -12,6 +12,10 @@ target/
 *.iml
 *.iws
 
+#Veracode
+flaws.json
+pipeline-scan.jar
+
 .DS_Store
 
 .vscode/
