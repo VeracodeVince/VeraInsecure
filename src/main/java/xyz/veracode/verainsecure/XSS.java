@@ -18,44 +18,37 @@ import java.io.PrintWriter;
 public class XSS extends HttpServlet {
 
 	private static final long serialVersionUID = 1L;
-	
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public XSS() {
-        super();
-        // TODO Auto-generated constructor stub
-    }
 
 	/**
-	 * @return 
+	 * @see HttpServlet#HttpServlet()
+	 */
+	public XSS() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+	/**
+	 * @return
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	public void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
-		
+
 		PrintWriter writer = res.getWriter();
-		
+
 		//CWE 80: Script Tags
 		//Reflective XSS
-		
+
 		String username = req.getParameter("xssusername");
 		String htmlResponse = "<html>";
 		htmlResponse += "<h2>Your xss vulnerable username is: " + username + "<br/>";
 		htmlResponse += "</html>";
 		writer.println(htmlResponse);
 
-		//Other XSS
-		String vulnparam = req.getParameter("xssvulnparam");
-		String badhtmlResponse = "<html>";
-		badhtmlResponse += "<h2>Your xss vulnerable username is: " + vulnparam + "<br/>";
-		badhtmlResponse += "</html>";
-		writer.println(badhtmlResponse);
-
 
 		//Protect against CWE 80
 		//Built in Encoding Library
 
-		String sanitizedUsername = Encode.forJavaScript(req.getParameter("xssusername")); 
+		String sanitizedUsername = Encode.forJavaScript(req.getParameter("xssusername"));
 		String cleanHTMLResponse = "<html>";
 		cleanHTMLResponse += "<h2>Your non xss vulnerable username is: " + sanitizedUsername + "<br/>";
 		cleanHTMLResponse += "</html>";
