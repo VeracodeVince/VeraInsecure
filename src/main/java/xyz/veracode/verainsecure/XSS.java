@@ -42,7 +42,7 @@ public class XSS extends HttpServlet {
 		String vulnparam = req.getParameter("xssvulnparam");
 		String htmlResponse = "<html>";
 		htmlResponse += "<h2>Your xss vulnerable username is: " + username + "<br/>";
-		htmlResponse += "<h2>Your other vulnerable param is: " + vulnparam + "<br/>";
+		//htmlResponse += "<h2>Your other vulnerable param is: " + vulnparam + "<br/>";
 		htmlResponse += "</html>";
 		writer.println(htmlResponse);
 		
