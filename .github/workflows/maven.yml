@@ -3,11 +3,7 @@
 
 name: Veracode Security Checks
 
-on:
-  push:
-    branches: [ master ]
-  pull_request:
-    branches: [ master ]
+on: [pull_request]
 
 jobs:
   build:
@@ -24,11 +20,11 @@ jobs:
       run: curl -sSL https://download.sourceclear.com/ci.sh | sh
       env: 
         SRCCLR_API_TOKEN: ${{ secrets.SRCCLR_API_TOKEN }}
-    - name: Pipeline Scan
-      run: |
-           curl -O https://downloads.veracode.com/securityscan/pipeline-scan-LATEST.zip
-           unzip pipeline-scan-LATEST.zip -d pipeline-scan-LATEST
-           ls
     - name: Build with Maven
       run: mvn -B package --file pom.xml
+    - name: Pipeline Scan
+      run: |
+        curl -O https://downloads.veracode.com/securityscan/pipeline-scan-LATEST.zip
+        unzip pipeline-scan-LATEST.zip -d pipeline-scan-LATEST
+        java -jar pipeline-scan-LATEST/pipeline-scan.jar -vid ${{ secrets.veracode_id }} -vkey ${{ secrets.veracode_key }} -f 'target/verainsecure.war' --fail_on_severity 'Very High'
    
