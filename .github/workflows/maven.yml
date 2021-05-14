@@ -31,7 +31,7 @@ jobs:
  
   veracodeChecks:
     runs-on: ubuntu-latest
-    needs: baseline
+    needs: buildVeracodeBaseline
     steps:
     - uses: actions/checkout@v2
     - name: Set up JDK 1.8
