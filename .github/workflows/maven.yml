@@ -22,7 +22,7 @@ jobs:
       run: |
         curl -O https://downloads.veracode.com/securityscan/pipeline-scan-LATEST.zip
         unzip pipeline-scan-LATEST.zip -d pipeline-scan-LATEST
-        java -jar pipeline-scan-LATEST/pipeline-scan.jar -vid ${{ secrets.veracode_id }} -vkey ${{ secrets.veracode_key }} -f 'target/verainsecure.war' --fail_on_serverity 'Very High' --json_output_file="baseline.json"
+        java -jar pipeline-scan-LATEST/pipeline-scan.jar -vid ${{ secrets.veracode_id }} -vkey ${{ secrets.veracode_key }} -f 'target/verainsecure.war' --fail_on_severity 'Very High' --json_output_file="baseline.json"
     - name: Upload Baseline
       uses: actions/upload-artifact@v1
       with:
