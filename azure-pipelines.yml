@@ -21,19 +21,17 @@ steps:
     testResultsFiles: '**/surefire-reports/TEST-*.xml'
     goals: 'package'
 
- - task: Bash@3
-inputs:
-    targetType: 'inline'
-    script: |
-      curl -O https://downloads.veracode.com/securityscan/pipeline-scan-LATEST.zip
-      unzip pipeline-scan-LATEST.zip -d pipeline-scan-LATEST
-      java -jar "pipeline-scan-LATEST/pipeline-scan.jar" -vid $(veracode_id) -vkey $(veracode_key) --fail_on_severity "Very High" -f "target/verainsecure.war"
-
-- task: Veracode@2
-inputs:
-    AnalysisService: 'vera_azure'
-    veracodeAppProfile: 'VeraInsecure 2021'
-    version: '$(build.buildNumber)'
-    filepath: '/home/vsts/work/1/s/target/verainsecure.war'
-    sandboxName: 'AzureDevOps'   
-
+- script: |
+    curl -O -L https://downloads.veracode.com/securityscan/pipeline-scan-LATEST.zip
+  displayName: 'Download Pipeline Scanner'
+- task: ExtractFiles@1
+  inputs:
+    archiveFilePatterns: 'pipeline-scan-LATEST.zip'
+    destinationFolder: 'pipeline'
+    cleanDestinationFolder: false
+- script: |
+      java -jar pipeline\pipeline-scan.jar --veracode_api_id "$(VERACODE_API_ID)" --veracode_api_key "$(VERACODE_API_KEY)" --file "example.jar" --fail_on_severity="Very High, High" --fail_on_cwe="80"
+  env:
+    VERACODE_API_ID: $(VERACODE_API_ID)
+    VERACODE_API_KEY: $(VERACODE_API_KEY)
+  displayName: 'Run Pipeline Scan'
