@@ -1,37 +1,34 @@
-# Maven
-# Build your Java project and run tests with Apache Maven.
-# Add steps that analyze code, save build artifacts, deploy, and more:
-# https://docs.microsoft.com/azure/devops/pipelines/languages/java
-
 trigger:
+
 - master
 
 pool:
-  vmImage: ubuntu-latest
+  vmImage: 'ubuntu-latest'
 
 steps:
+
+- task: Bash@3
+  inputs:
+    targetType: 'inline'
+    script: 'curl -sSL https://download.sourceclear.com/ci.sh | sh'
+  env: 
+    SRCCLR_API_TOKEN: $(SRCCLR_API_TOKEN)
+
 - task: Maven@3
   inputs:
     mavenPomFile: 'pom.xml'
-    mavenOptions: '-Xmx3072m'
+    goals: 'clean package'
+    publishJUnitResults: false
     javaHomeOption: 'JDKVersion'
-    jdkVersionOption: '1.8'
-    jdkArchitectureOption: 'x64'
-    publishJUnitResults: true
-    testResultsFiles: '**/surefire-reports/TEST-*.xml'
-    goals: 'package'
+    mavenVersionOption: 'Default'
+    mavenAuthenticateFeed: false
+    effectivePomSkip: false
+    sonarQubeRunAnalysis: false
 
-- script: |
-    curl -O -L https://downloads.veracode.com/securityscan/pipeline-scan-LATEST.zip
-  displayName: 'Download Pipeline Scanner'
-- task: ExtractFiles@1
+- task: Bash@3
   inputs:
-    archiveFilePatterns: 'pipeline-scan-LATEST.zip'
-    destinationFolder: 'pipeline'
-    cleanDestinationFolder: false
-- script: |
-      java -jar pipeline\pipeline-scan.jar --veracode_api_id "$(VERACODE_API_ID)" --veracode_api_key "$(VERACODE_API_KEY)" --file "example.jar" --fail_on_severity="Very High, High" --fail_on_cwe="80"
-  env:
-    VERACODE_API_ID: $(VERACODE_API_ID)
-    VERACODE_API_KEY: $(VERACODE_API_KEY)
-  displayName: 'Run Pipeline Scan'
+    targetType: 'inline'
+    script: |
+      curl -O https://downloads.veracode.com/securityscan/pipeline-scan-LATEST.zip
+      unzip pipeline-scan-LATEST.zip -d pipeline-scan-LATEST
+      java -jar "pipeline-scan-LATEST/pipeline-scan.jar" -vid $(veracode_id) -vkey $(veracode_key) --fail_on_severity "Very High" -f "target/verainsecure.war"
