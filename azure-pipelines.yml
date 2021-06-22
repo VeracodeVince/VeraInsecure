@@ -32,3 +32,15 @@ steps:
       curl -O https://downloads.veracode.com/securityscan/pipeline-scan-LATEST.zip
       unzip pipeline-scan-LATEST.zip -d pipeline-scan-LATEST
       java -jar "pipeline-scan-LATEST/pipeline-scan.jar" -vid $(VERACODE_API_KEY_ID) -vkey $(VERACODE_API_KEY_SECRET) --file "target/verainsecure.war" --fail_on_severity="Very High, High" --fail_on_cwe="80" 
+
+- task: Veracode Flaw Importer@3
+  inputs:
+    ConnectionDetailsSelection: 'Credentials'
+    apiId: '36b4bd6cf2736c963be2cb66f4479dc3'
+    apiKey: '6fc0608c4fc610ff2cb8557fb5c47240e1787544f87b684f369145c3ba05ae79f68428bad1fb9bc59ff70be457ee6b80f96adede7c82515f5612b653a47b254d'
+    veracodeAppProfile: '$(system.teamProject)'
+    sandboxName: 
+    importType: 'All Unmitigated Flaws Violating Policy'
+    workItemType: 'Bug'
+    area: '$(system.teamProject)'
+    flawImportLimit: '1000'
