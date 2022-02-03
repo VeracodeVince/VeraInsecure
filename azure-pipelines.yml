@@ -44,10 +44,18 @@ steps:
 #       unzip pipeline-scan-LATEST.zip -d pipeline-scan-LATEST
 #       java -jar "pipeline-scan-LATEST/pipeline-scan.jar" -vid $(VERACODE_API_KEY_ID) -vkey $(VERACODE_API_KEY_SECRET) --file "target/verainsecure.war" 
 
-- task: AzurePowerShell@5
+# - task: AzurePowerShell@5
+#   inputs:
+#     ScriptType: 'InlineScript'
+#     Inline: |
+#       curl -O https://downloads.veracode.com/securityscan/pipeline-scan-LATEST.zip
+#       unzip pipeline-scan-LATEST.zip -d pipeline-scan-LATEST
+#       java -jar "pipeline-scan-LATEST/pipeline-scan.jar" -vid $(VERACODE_API_KEY_ID) -vkey $(VERACODE_API_KEY_SECRET) --file "target/verainsecure.war"
+
+
+- task: CmdLine@2
   inputs:
-    ScriptType: 'InlineScript'
-    Inline: |
+    script: |
       curl -O https://downloads.veracode.com/securityscan/pipeline-scan-LATEST.zip
       unzip pipeline-scan-LATEST.zip -d pipeline-scan-LATEST
       java -jar "pipeline-scan-LATEST/pipeline-scan.jar" -vid $(VERACODE_API_KEY_ID) -vkey $(VERACODE_API_KEY_SECRET) --file "target/verainsecure.war"
