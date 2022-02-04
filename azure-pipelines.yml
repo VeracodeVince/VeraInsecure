@@ -47,7 +47,7 @@ steps:
   inputs:
     targetType: 'inline'
     script: |
-      $Env:SRCCLR_API_TOKEN="eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MjQ3Nzc4LCJleHAiOjE2NDQwMTQxMzYsImF1dGhvcml0aWVzIjoiQUdFTlQiLCJqdGkiOiJlNGZkYTc3ZS1hODE3LTRmYTQtYjJmZS1hNzJjMzhmY2U3MmQiLCJjbGllbnRfaWQiOiIiLCJzY29wZSI6W119.aT6b4bOPIIo4tizxeX9KacUaqypMfzAi4UOuB00a715P1ZnrzlMjmIFYQ-1xWs2AbDEnddQFLVgBaHKMYifmMNPcRvd9fuUrbb42JQKu8cOmud8m0HiKOMjA8ZTPNoBTfdymCtZcWlFUsOLWwa6EURmLE5-wcW3PKl3-44igUtQ"
+      $Env:SRCCLR_API_TOKEN
       Set-ExecutionPolicy AllSigned -Scope Process -Force
       iex ((New-Object System.Net.WebClient).DownloadString('https://download.srcclr.com/ci.ps1'))
       srcclr scan target/verainsecure.war
