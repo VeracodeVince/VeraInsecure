@@ -14,6 +14,8 @@ steps:
 #   env: 
 #     SRCCLR_API_TOKEN: $(SRCCLR_API_TOKEN)
 
+
+
 - task: Maven@3
   inputs:
     mavenPomFile: 'pom.xml'
@@ -35,9 +37,16 @@ steps:
 #     filepath: '$(build.artifactstagingdirectory)'
 #     maximumWaitTime: '360'
 
-- task: CmdLine@2
+# - task: CmdLine@2
+#   inputs:
+#     script: |
+#       curl -O https://downloads.veracode.com/securityscan/pipeline-scan-LATEST.zip
+#       unzip pipeline-scan-LATEST.zip -d pipeline-scan-LATEST
+#       java -jar "pipeline-scan-LATEST/pipeline-scan.jar" -vid $(VERACODE_API_KEY_ID) -vkey $(VERACODE_API_KEY_SECRET) --file "target/verainsecure.war"
+- task: PowerShell@2
   inputs:
+    targetType: 'inline'
     script: |
-      curl -O https://downloads.veracode.com/securityscan/pipeline-scan-LATEST.zip
-      unzip pipeline-scan-LATEST.zip -d pipeline-scan-LATEST
-      java -jar "pipeline-scan-LATEST/pipeline-scan.jar" -vid $(VERACODE_API_KEY_ID) -vkey $(VERACODE_API_KEY_SECRET) --file "target/verainsecure.war"
+      Set-ExecutionPolicy AllSigned -Scope Process -Force
+      iex ((New-Object System.Net.WebClient).DownloadString('https://download.srcclr.com/ci.ps1'))
+      srcclr scan target/verainsecure.war
