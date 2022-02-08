@@ -7,15 +7,6 @@ pool:
 
 steps:
 
-# - task: Bash@3
-#   inputs:
-#     targetType: 'inline'
-#     script: 'curl -sSL https://download.sourceclear.com/ci.sh | sh'
-#   env: 
-#     SRCCLR_API_TOKEN: $(SRCCLR_API_TOKEN)
-
-
-
 - task: Maven@3
   inputs:
     mavenPomFile: 'pom.xml'
@@ -27,22 +18,6 @@ steps:
     effectivePomSkip: false
     sonarQubeRunAnalysis: false
 
-# - task: Veracode@3
-#   inputs:
-#     ConnectionDetailsSelection: 'Credentials'
-#     apiId: '36b4bd6cf2736c963be2cb66f4479dc3'
-#     apiKey: '6fc0608c4fc610ff2cb8557fb5c47240e1787544f87b684f369145c3ba05ae79f68428bad1fb9bc59ff70be457ee6b80f96adede7c82515f5612b653a47b254d'
-#     veracodeAppProfile: '$(Azure Java App)'
-#     version: '$(build.buildNumber)'
-#     filepath: '$(build.artifactstagingdirectory)'
-#     maximumWaitTime: '360'
-
-# - task: CmdLine@2
-#   inputs:
-#     script: |
-#       curl -O https://downloads.veracode.com/securityscan/pipeline-scan-LATEST.zip
-#       unzip pipeline-scan-LATEST.zip -d pipeline-scan-LATEST
-#       java -jar "pipeline-scan-LATEST/pipeline-scan.jar" -vid $(VERACODE_API_KEY_ID) -vkey $(VERACODE_API_KEY_SECRET) --file "target/verainsecure.war"
 - task: PowerShell@2
   inputs:
     targetType: 'inline'
