@@ -37,12 +37,11 @@ steps:
 #       Set-ExecutionPolicy AllSigned -Scope Process -Force
 #       iex ((New-Object System.Net.WebClient).DownloadString('https://download.srcclr.com/ci.ps1'))
 #       srcclr scan
-
 - task: Veracode@3
   inputs:
     ConnectionDetailsSelection: 'Credentials'
-    apiId: '36b4bd6cf2736c963be2cb66f4479dc3'
-    apiKey: '6fc0608c4fc610ff2cb8557fb5c47240e1787544f87b684f369145c3ba05ae79f68428bad1fb9bc59ff70be457ee6b80f96adede7c82515f5612b653a47b254d'
+    apiId: '8902e24c2f234d2a4845c58f7ae1bd83'
+    apiKey: '2cf8130a75d06adaf312a39179640036bdff5b3f0c258cb51c8109624d2b93883cd49319e5ecf25a0d0e415afde61f410b9b593f73067743d7441ee81ca483f4'
     veracodeAppProfile: '$(system.teamProject)'
     version: '$(build.buildNumber)'
     filepath: '$(build.artifactstagingdirectory)'
