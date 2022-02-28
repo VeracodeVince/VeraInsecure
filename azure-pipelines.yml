@@ -18,12 +18,10 @@ steps:
     effectivePomSkip: false
     sonarQubeRunAnalysis: false
 
-- task: Veracode@3
+- task: PowerShell@2
   inputs:
-    ConnectionDetailsSelection: 'Credentials'
-    apiId: '8902e24c2f234d2a4845c58f7ae1bd83'
-    apiKey: '2cf8130a75d06adaf312a39179640036bdff5b3f0c258cb51c8109624d2b93883cd49319e5ecf25a0d0e415afde61f410b9b593f73067743d7441ee81ca483f4'
-    veracodeAppProfile: '$(system.teamProject)'
-    version: '$(build.buildNumber)'
-    filepath: '$(build.artifactstagingdirectory)'
-    maximumWaitTime: '360'
+    targetType: 'inline'
+    script: |
+      Set-ExecutionPolicy AllSigned -Scope Process -Force
+      iex ((New-Object System.Net.WebClient).DownloadString('https://download.srcclr.com/ci.ps1'))
+      srcclr scan
