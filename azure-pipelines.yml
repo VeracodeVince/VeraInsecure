@@ -18,6 +18,19 @@ steps:
     effectivePomSkip: false
     sonarQubeRunAnalysis: false
 
+# Veracode Static Analysis Step (Upload and Scan, Policy Scan) 
+
+- task: Veracode@3
+  inputs:
+    ConnectionDetailsSelection: 'Credentials'
+    veracodeAppProfile: '$(system.teamProject)'
+    version: '$(build.buildNumber)'
+    filepath: '$(build.artifactstagingdirectory)'
+    createProfile: true
+    maximumWaitTime: '360'
+
+# Veracode Software Composition Analysis Step 
+
 - task: PowerShell@2
   inputs:
     targetType: 'inline'
@@ -25,10 +38,3 @@ steps:
       Set-ExecutionPolicy AllSigned -Scope Process -Force
       iex ((New-Object System.Net.WebClient).DownloadString('https://download.srcclr.com/ci.ps1'))
       srcclr scan
-
-- task: CmdLine@2
-  inputs:
-    script: |
-      curl -sSO https://downloads.veracode.com/securityscan/pipeline-scan-LATEST.zip
-              unzip -o pipeline-scan-LATEST.zip
-              java -jar pipeline-scan.jar -vid $(VERACODE_API_ID) -vkey $(VERACODE_API_KEY) -f $(build.artifactstagingdirectory)
