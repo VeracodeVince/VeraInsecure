@@ -38,3 +38,12 @@ steps:
       Set-ExecutionPolicy AllSigned -Scope Process -Force
       iex ((New-Object System.Net.WebClient).DownloadString('https://download.srcclr.com/ci.ps1'))
       srcclr scan
+
+# Veracode Pipeline Scanner Step 
+- task: CmdLine@2
+  inputs:
+    script: |
+      curl -O https://downloads.veracode.com/securityscan/pipeline-scan-LATEST.zip
+      unzip pipeline-scan-LATEST.zip pipeline-scan.jar
+      java -jar pipeline-scan.jar -f target/verademo.war -vid "$VERACODE_VID" -vkey "$VERACODE_VKEY" --
+      fail_on_cwe="200" --issue_details true
