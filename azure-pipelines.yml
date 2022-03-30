@@ -18,16 +18,6 @@ steps:
     effectivePomSkip: false
     sonarQubeRunAnalysis: false
 
-- task: Veracode@3
-  inputs:
-    ConnectionDetailsSelection: 'Credentials'
-    apiId: '8902e24c2f234d2a4845c58f7ae1bd83'
-    apiKey: '2cf8130a75d06adaf312a39179640036bdff5b3f0c258cb51c8109624d2b93883cd49319e5ecf25a0d0e415afde61f410b9b593f73067743d7441ee81ca483f4'
-    veracodeAppProfile: '$(system.teamProject)'
-    version: '$(build.buildNumber)'
-    filepath: '$(build.artifactstagingdirectory)'
-    createProfile: true
-    maximumWaitTime: '360'
 # Veracode Static Analysis Step (Upload and Scan, Policy Scan) 
 
 # - task: Veracode@3
@@ -49,11 +39,10 @@ steps:
 #       iex ((New-Object System.Net.WebClient).DownloadString('https://download.srcclr.com/ci.ps1'))
 #       srcclr scan
 
-# # Veracode Pipeline Scanner Step 
-# - task: CmdLine@2
-#   inputs:
-#     script: |
-#       curl -O https://downloads.veracode.com/securityscan/pipeline-scan-LATEST.zip
-#       unzip pipeline-scan-LATEST.zip pipeline-scan.jar
-#       java -jar pipeline-scan.jar -f target/verademo.war -vid "$VERACODE_VID" -vkey "$VERACODE_VKEY" --
-#       fail_on_cwe="200" --issue_details true
+# Veracode Pipeline Scanner Step 
+- task: CmdLine@2
+  inputs:
+    script: |
+      curl -O https://downloads.veracode.com/securityscan/pipeline-scan-LATEST.zip
+      unzip pipeline-scan-LATEST.zip pipeline-scan.jar
+      java -jar pipeline-scan.jar -f target/verademo.war -vid "$VERACODE_VID" -vkey "$VERACODE_VKEY" 
