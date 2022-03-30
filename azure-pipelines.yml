@@ -45,4 +45,4 @@ steps:
     script: |
       curl -O https://downloads.veracode.com/securityscan/pipeline-scan-LATEST.zip
       unzip pipeline-scan-LATEST.zip pipeline-scan.jar
-      java -jar pipeline-scan.jar -f target/verademo.war -vid "$VERACODE_VID" -vkey "$VERACODE_VKEY" 
+      java -jar pipeline-scan.jar -f target/verademo.war -vid "$VERACODE_VID" -vkey "$VERACODE_VKEY"
